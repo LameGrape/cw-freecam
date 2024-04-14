@@ -9,6 +9,7 @@ public class Plugin : BaseUnityPlugin
 {
     public static GameObject cameraObject;
     public static bool isFreeCam = false;
+    public static bool isHud = true;
 
     private void Awake()
     {
@@ -83,15 +84,21 @@ public class FreeCam : MonoBehaviour
     public GameObject head;
     public GameObject text;
     public GameObject text2electricboogaloo; // iamgoinginsaneiamgoinginsaneiamgoinginsane
+    public GameObject hud;
 
     public void Update()
     {
         try
         {
             if (Input.GetKeyDown(KeyCode.M)) Plugin.isFreeCam = !Plugin.isFreeCam;
+            if (Input.GetKeyDown(KeyCode.Comma)) Plugin.isHud = !Plugin.isHud;
+
             if (head == null) head = Player.localPlayer.transform.Find("Guy_W_Finger/Cube.001").gameObject;
             if (text == null) text = Player.localPlayer.transform.Find("HeadPosition/FACE").gameObject;
             if (text2electricboogaloo == null) text2electricboogaloo = text.transform.GetChild(0).gameObject;
+            if (hud == null) hud = GameObject.Find("HelmetUI");
+
+            hud.SetActive(Plugin.isHud);
 
             if (Plugin.isFreeCam)
             {
