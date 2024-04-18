@@ -4,7 +4,8 @@ using HarmonyLib;
 
 namespace freecam;
 
-[BepInPlugin("raisin.plugin.freecam", "freecam", "0.1.0")]
+[ContentWarningPlugin("raisin.plugin.freecam", "1.1.1", true)]
+[BepInPlugin("raisin.plugin.freecam", "freecam", "1.1.1")]
 public class Plugin : BaseUnityPlugin
 {
     public static GameObject cameraObject;
