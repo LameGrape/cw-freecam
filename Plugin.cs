@@ -1,14 +1,18 @@
 ﻿using BepInEx;
 using UnityEngine;
 using HarmonyLib;
+using UnityEngine.SceneManagement;
+using System.Security;
 
 namespace freecam;
 
-[ContentWarningPlugin("raisin.plugin.freecam", "1.1.1", true)]
-[BepInPlugin("raisin.plugin.freecam", "freecam", "1.1.1")]
+[ContentWarningPlugin(Plugin.PLUGIN_GUID, Plugin.PLUGIN_VERSION, true)]
+[BepInPlugin(Plugin.PLUGIN_GUID, "freecam", Plugin.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
-    public static GameObject cameraObject;
+    public const string PLUGIN_GUID = "raisin.plugin.freecam";
+    public const string PLUGIN_VERSION = "1.1.2";
+
     public static bool isFreeCam = false;
     public static bool isHud = true;
 
@@ -16,11 +20,16 @@ public class Plugin : BaseUnityPlugin
     {
         Logger.LogInfo("loaded freecam");
 
-        cameraObject = new GameObject("freecam");
-        cameraObject.AddComponent<FreeCam>();
-        DontDestroyOnLoad(cameraObject);
+        SceneManager.activeSceneChanged += ApplyFreecam;
 
         Harmony.CreateAndPatchAll(typeof(Plugin));
+    }
+
+    private void ApplyFreecam(Scene current, Scene next)
+    {
+        if (next.name == "NewMainMenu") return; // no freecam on main menu
+        isFreeCam = false;
+        Camera.main.gameObject.AddComponent<FreeCam>();
     }
 
     [HarmonyPrefix]
