@@ -2,7 +2,6 @@
 using UnityEngine;
 using HarmonyLib;
 using UnityEngine.SceneManagement;
-using System.Security;
 
 namespace freecam;
 
