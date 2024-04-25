@@ -14,23 +14,72 @@ public class Plugin : BaseUnityPlugin
     public const string PLUGIN_VERSION = "1.1.2";
 
     public static bool isFreeCam = false;
+    public static bool canFreeCam = false;
     public static bool isHud = true;
+
+    public static GameObject head;
+    public static GameObject text;
+    public static GameObject text2electricboogaloo; // iamgoinginsaneiamgoinginsaneiamgoinginsane
+    public static GameObject hud;
 
     private void Awake()
     {
-        Logger.LogInfo("loaded freecam");
+        Logger.LogInfo($"Loaded Freecam {PLUGIN_VERSION}");
 
-        SceneManager.activeSceneChanged += ApplyFreecam;
+        SceneManager.activeSceneChanged += SceneChanged;
 
         Harmony.CreateAndPatchAll(typeof(Plugin));
     }
 
-    private void ApplyFreecam(Scene current, Scene next)
+    private void SceneChanged(Scene current, Scene next)
     {
-        if (next.name == "NewMainMenu") return; // no freecam on main menu
+        canFreeCam = next.name != "NewMainMenu";
         isFreeCam = false;
-        Camera.main.gameObject.AddComponent<FreeCam>();
+        head = null;
+        text = null;
+        text2electricboogaloo = null;
+        hud = null;
     }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(MainCameraMovement), "LateUpdate")]
+    public static bool CameraLateUpdatePatch()
+    {
+        try
+        {
+            if (Input.GetKeyDown(KeyCode.M)) isFreeCam = !isFreeCam;
+            if (Input.GetKeyDown(KeyCode.Comma)) isHud = !isHud;
+
+            if (head == null) head = Player.localPlayer.transform.Find("Guy_W_Finger/Cube.001").gameObject;
+            if (text == null) text = Player.localPlayer.transform.Find("HeadPosition/FACE").gameObject;
+            if (text2electricboogaloo == null) text2electricboogaloo = text.transform.GetChild(0).gameObject;
+            if (hud == null) hud = GameObject.Find("HelmetUI");
+
+            hud.SetActive(isHud);
+
+            if (isFreeCam)
+            {
+                head.layer = 0;
+                text.layer = 0;
+                text2electricboogaloo.layer = 0;
+                Camera.main.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * 0.15f);
+                Camera.main.transform.rotation = Quaternion.LookRotation(Player.localPlayer.data.lookDirection);
+
+            }
+            else
+            {
+                head.layer = 29;
+                text.layer = 29;
+                text2electricboogaloo.layer = 29;
+                Camera.main.transform.position = Player.localPlayer.refs.cameraPos.position;
+                Camera.main.transform.rotation = Player.localPlayer.refs.cameraPos.rotation;
+            }
+        }
+        catch { } // error handling? checking if player is null? nah just wrap it in a try catch block
+
+        return !isFreeCam;
+    }
+
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PlayerController), "Movement")]
@@ -53,12 +102,6 @@ public class Plugin : BaseUnityPlugin
         return !isFreeCam;
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(MainCameraMovement), "LateUpdate")]
-    public static bool CameraLateUpdatePatch()
-    {
-        return !isFreeCam;
-    }
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PlayerAnimationHandler), "SetAnimatorValues")]
@@ -86,48 +129,5 @@ public class Plugin : BaseUnityPlugin
     public static bool PlayerItemsFakeFixedUpdatePatch()  // waiter waiter more <early return prefixes> please
     {
         return !isFreeCam;
-    }
-}
-
-public class FreeCam : MonoBehaviour
-{
-    public GameObject head;
-    public GameObject text;
-    public GameObject text2electricboogaloo; // iamgoinginsaneiamgoinginsaneiamgoinginsane
-    public GameObject hud;
-
-    public void Update()
-    {
-        try
-        {
-            if (Input.GetKeyDown(KeyCode.M)) Plugin.isFreeCam = !Plugin.isFreeCam;
-            if (Input.GetKeyDown(KeyCode.Comma)) Plugin.isHud = !Plugin.isHud;
-
-            if (head == null) head = Player.localPlayer.transform.Find("Guy_W_Finger/Cube.001").gameObject;
-            if (text == null) text = Player.localPlayer.transform.Find("HeadPosition/FACE").gameObject;
-            if (text2electricboogaloo == null) text2electricboogaloo = text.transform.GetChild(0).gameObject;
-            if (hud == null) hud = GameObject.Find("HelmetUI");
-
-            hud.SetActive(Plugin.isHud);
-
-            if (Plugin.isFreeCam)
-            {
-                head.layer = 0;
-                text.layer = 0;
-                text2electricboogaloo.layer = 0;
-                Camera.main.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * 0.15f);
-                Camera.main.transform.rotation = Quaternion.LookRotation(Player.localPlayer.data.lookDirection);
-
-            }
-            else
-            {
-                head.layer = 29;
-                text.layer = 29;
-                text2electricboogaloo.layer = 29;
-                Camera.main.transform.position = Player.localPlayer.refs.cameraPos.position;
-                Camera.main.transform.rotation = Player.localPlayer.refs.cameraPos.rotation;
-            }
-        }
-        catch { } // error handling? checking if player is null? nah just wrap it in a try catch block
     }
 }
