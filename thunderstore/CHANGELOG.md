@@ -1,3 +1,6 @@
+## 1.1.3
+Actually fixed it this time?
+
 ## 1.1.2
 - Fix for mod not working in multiplayer
 - Freecam is automatically disabled when switching scenes
