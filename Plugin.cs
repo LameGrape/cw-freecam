@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace freecam;
 
-[ContentWarningPlugin(Plugin.PLUGIN_GUID, Plugin.PLUGIN_VERSION, true)]
+[ContentWarningPlugin(Plugin.PLUGIN_GUID, Plugin.PLUGIN_VERSION, false)]
 [BepInPlugin(Plugin.PLUGIN_GUID, "freecam", Plugin.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {

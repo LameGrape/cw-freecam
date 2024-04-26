@@ -1,3 +1,6 @@
+## 1.1.4
+i was forced to remove vanilla compat :(
+
 ## 1.1.3
 Actually fixed it this time?
 
