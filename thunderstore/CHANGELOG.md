@@ -1,3 +1,6 @@
+## 1.1.5
+Newest patch changed some object names, this should fix issues related to that
+
 ## 1.1.4
 i was forced to remove vanilla compat :(
 

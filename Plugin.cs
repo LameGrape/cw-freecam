@@ -10,7 +10,7 @@ namespace freecam;
 public class Plugin : BaseUnityPlugin
 {
     public const string PLUGIN_GUID = "raisin.plugin.freecam";
-    public const string PLUGIN_VERSION = "1.1.3";
+    public const string PLUGIN_VERSION = "1.1.5";
 
     public static bool isFreeCam = false;
     public static bool canFreeCam = false;
@@ -49,7 +49,7 @@ public class Plugin : BaseUnityPlugin
             if (Input.GetKeyDown(KeyCode.M)) isFreeCam = !isFreeCam;
             if (Input.GetKeyDown(KeyCode.Comma)) isHud = !isHud;
 
-            if (head == null) head = Player.localPlayer.transform.Find("Guy_W_Finger/Cube.001").gameObject;
+            if (head == null) head = Player.localPlayer.transform.Find("CharacterModel/HeadRenderer").gameObject;
             if (text == null) text = Player.localPlayer.transform.Find("HeadPosition/FACE").gameObject;
             if (text2electricboogaloo == null) text2electricboogaloo = text.transform.GetChild(0).gameObject;
             if (hud == null) hud = GameObject.Find("HelmetUI");
