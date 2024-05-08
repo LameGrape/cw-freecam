@@ -1,3 +1,8 @@
+## 1.1.6
+SCREW YOU UNITY I WIN I FIXED THE ISSUES
+
+oh and also hats are visible now
+
 ## 1.1.5
 Newest patch changed some object names, this should fix issues related to that
 

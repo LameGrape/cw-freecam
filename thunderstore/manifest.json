@@ -1,7 +1,7 @@
 {
     "name": "Freecam",
     "description": "Unlock the camera from the player and move it wherever you want to.",
-    "version_number": "1.1.5",
+    "version_number": "1.1.6",
     "dependencies": [],
     "website_url": "https://github.com/LameGrape/cw-freecam"
 }
