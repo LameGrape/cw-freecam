@@ -10,7 +10,7 @@ namespace freecam;
 public class Plugin : BaseUnityPlugin
 {
     public const string PLUGIN_GUID = "raisin.plugin.freecam";
-    public const string PLUGIN_VERSION = "1.1.6";
+    public const string PLUGIN_VERSION = "1.1.7";
 
     public static bool isFreeCam = false;
     public static bool canFreeCam = false;
