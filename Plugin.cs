@@ -95,8 +95,9 @@ public class Plugin : BaseUnityPlugin
     [HarmonyPatch(typeof(PlayerAnimationHandler), "HandleAnimationTarget")]
     [HarmonyPatch(typeof(PlayerItems), "FixedUpdate")]
     [HarmonyPatch(typeof(PlayerItemsFake), "FixedUpdate")]
-    public static bool EarlyReturns()
+    public static bool EarlyReturns(MonoBehaviour __instance)
     {
-        return !isFreeCam;
+        if (__instance.gameObject.GetComponent<Player>().ai) return true;
+        else return !isFreeCam;
     }
 }

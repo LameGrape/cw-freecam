@@ -1,3 +1,6 @@
+## 1.1.7
+Fixed monsters not moving while freecam is enabled
+
 ## 1.1.6
 SCREW YOU UNITY I WIN I FIXED THE ISSUES
 
